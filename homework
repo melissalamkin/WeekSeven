@@ -22,15 +22,18 @@ public with sharing class WeekSevenHomework {
         //3.  Can you write a SOQL query from scratch that will return the top 10 Accounts in the org, ordered by annual
         //revenue in decending order?  Print your results in the debug log.
         
-        List <Account> topTenAccounts = [SELECT Id, Name, AnnualRevenue from Account order by AnnualRevenue DESC NULLS LAST LIMIT 10];
-        System.debug('My top 10 Accounts by Annual Revenue is ' + topTenAccounts);
-
+        List<Account> topTenAccts = [SELECT Id, Name, AnnualRevenue from Account where AnnualRevenue <> NULL order by AnnualRevenue DESC Limit 10];
+        
+		System.debug('The Top Ten Accounts by Annual Revenue = ' + topTenAccts);
 
         //4.  Can you write a SOQL query that will return all opportunities for all accounts in the topFiveAccounts list that we used
         //in Number 1?  (topFiveAccounts) Hint:  If you're stuck, look back a the code in WeekSixClassExercises, getOpenOppsForHotAccounts method
         //  Print your results in the debug log.
-        //List <Opportunity> allOpps = [SELECT ID, Name, StageName, Owner.Name from Opportunity where accountid in topFiveAccounts.id];
-        //system.debug('The opportunties list for the Top Five Accounts are: ' + allOpps);
+
+        List<Opportunity> topFiveOpps = [SELECT Id, Name, StageName from Opportunity where accountId = :topFiveAccounts];
+        
+        System.debug('The Opportunties from the Top Five Accounts are: ' + topFiveOpps);
+
     }
 
     public static void forTheLoveOfForLoops() {
@@ -42,10 +45,14 @@ public with sharing class WeekSevenHomework {
 
 
         //This loop should run 5 times
+        Integer Counter = 1;
         for (Integer i=0; i<5; i++) {
-        System.debug(i + 1);    
         System.debug('i is now: '+i);
-        //}
+            
+            
+        System.debug('Counter ran a total of ' +Counter );
+        Counter ++;
+        }
 
 
         //2.  Below is a loop that iterates through a list.  Can you change it to use the new For Loop syntax?  It should print out
@@ -55,12 +62,10 @@ public with sharing class WeekSevenHomework {
 
         List<Account> accountList = [SELECT Id, Name FROM Account LIMIT 5];
 
-        for (Account a : accountList) {
-            
+        	for (Account a : accountList) {
             System.debug('Account Name: ' + a.name);
+            
         }
 
 
     }
-   
-}
